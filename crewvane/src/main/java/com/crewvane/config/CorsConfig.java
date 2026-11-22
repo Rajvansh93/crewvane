@@ -16,7 +16,7 @@ public class CorsConfig {
                 registry.addMapping("/api/**")
                         .allowedOrigins(
                                 "http://localhost:5173",
-                                "https://YOUR-FRONTEND-DOMAIN"
+                                "https://crewvane-web.vercel.app"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");
