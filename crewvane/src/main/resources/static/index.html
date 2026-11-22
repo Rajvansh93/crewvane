@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crewvane | Campus Connect</title>
+
+    <style>
+        :root {
+            --navy: #14243d;
+            --blue: #4169e1;
+            --bg: #f4f6fb;
+            --text: #202b3c;
+            --muted: #778397;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 245px;
+            background: var(--navy);
+            color: white;
+            padding: 30px 20px;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .tagline {
+            color: #aab8cf;
+            font-size: 12px;
+            margin-bottom: 55px;
+        }
+
+        .nav-title {
+            color: #8494ae;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+        }
+
+        .nav-item {
+            padding: 13px 15px;
+            border-radius: 9px;
+            margin-bottom: 9px;
+            cursor: pointer;
+            color: #d2dbea;
+            font-size: 14px;
+        }
+
+        .nav-item.active,
+        .nav-item:hover {
+            background: #29446c;
+            color: white;
+        }
+
+        .main {
+            flex: 1;
+            padding: 35px 45px;
+            min-width: 0;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .welcome h1 {
+            font-size: 28px;
+            margin-bottom: 7px;
+        }
+
+        .welcome p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .profile {
+            background: white;
+            padding: 11px 17px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .hero {
+            background: linear-gradient(120deg, #203c69, #4169e1);
+            color: white;
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 30px;
+        }
+
+        .hero h2 {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #d8e4ff;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .primary-btn {
+            background: white;
+            color: #294e9b;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 28px 0 18px;
+            gap: 12px;
+        }
+
+        .section-heading h2 {
+            font-size: 21px;
+        }
+
+        .search-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .search-area input {
+            flex: 1;
+            min-width: 0;
+            padding: 13px 15px;
+            border: 1px solid #e0e5ef;
+            border-radius: 9px;
+            outline: none;
+            background: white;
+        }
+
+        .search-area select {
+            padding: 12px;
+            border: 1px solid #e0e5ef;
+            border-radius: 9px;
+            background: white;
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 4px 15px rgba(20,36,61,0.04);
+            border: 1px solid #edf0f5;
+        }
+
+        .event-icon {
+            width: 43px;
+            height: 43px;
+            background: #eaf0ff;
+            border-radius: 11px;
+            display: grid;
+            place-items: center;
+            font-size: 21px;
+            margin-bottom: 17px;
+        }
+
+        .event-card h3 {
+            font-size: 17px;
+            margin-bottom: 9px;
+            overflow-wrap: anywhere;
+        }
+
+        .event-card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 13px;
+            overflow-wrap: anywhere;
+        }
+
+        .location {
+            color: #4169e1 !important;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 17px;
+        }
+
+        .small-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .edit-btn {
+            background: #eaf0ff;
+            color: #4169e1;
+        }
+
+        .delete-btn {
+            background: #fff0f0;
+            color: #d84b4b;
+        }
+
+        .empty {
+            grid-column: 1 / -1;
+            background: white;
+            padding: 45px 20px;
+            text-align: center;
+            border-radius: 13px;
+            color: var(--muted);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10,20,35,0.6);
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            z-index: 10;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 470px;
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+        }
+
+        .modal-content input,
+        .modal-content textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #dfe5ee;
+            border-radius: 8px;
+            margin-bottom: 13px;
+            outline: none;
+        }
+
+        .modal-content textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-actions button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .save-btn {
+            background: var(--blue);
+            color: white;
+        }
+
+        .cancel-btn {
+            background: #edf0f5;
+            color: #354258;
+        }
+
+        .status {
+            margin: 12px 0;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        @media(max-width: 1000px) {
+            .event-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media(max-width: 650px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                padding: 22px 16px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+            }
+
+            .welcome h1 {
+                font-size: 23px;
+            }
+
+            .event-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-area {
+                flex-wrap: wrap;
+            }
+
+            .search-area input {
+                flex-basis: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="logo">CREWVANE.</div>
+        <div class="tagline">YOUR CAMPUS. CONNECTED.</div>
+
+        <div class="nav-title">WORKSPACE</div>
+        <div class="nav-item active" onclick="loadEvents()">▦ &nbsp; Dashboard</div>
+        <div class="nav-item" onclick="openModal()">＋ &nbsp; Create Event</div>
+        <div class="nav-item" onclick="loadEvents()">◷ &nbsp; All Events</div>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div class="welcome">
+                <h1>Campus Dashboard</h1>
+                <p>Discover what's happening around your campus.</p>
+            </div>
+            <div class="profile">✦ &nbsp; Campus Community</div>
+        </div>
+
+        <section class="hero">
+            <h2>Bring your campus to life.</h2>
+            <p>Discover events, explore opportunities and stay connected.</p>
+            <button class="primary-btn" onclick="openModal()">
+                + Create New Event
+            </button>
+        </section>
+
+        <div class="section-heading">
+            <h2>Explore Events</h2>
+            <span id="eventCount" style="color:#778397;font-size:13px"></span>
+        </div>
+
+        <div class="search-area">
+            <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search events..."
+                    oninput="searchEvents()">
+
+            <select id="searchType" onchange="searchEvents()">
+                <option value="title">By Title</option>
+                <option value="location">By Location</option>
+            </select>
+        </div>
+
+        <div id="status" class="status"></div>
+
+        <div class="event-grid" id="eventGrid">
+            <div class="empty">Loading campus events...</div>
+        </div>
+
+    </main>
+</div>
+
+<!-- Event form -->
+
+<div class="modal" id="eventModal">
+    <div class="modal-content">
+
+        <h2 id="modalTitle">Create New Event</h2>
+
+        <form id="eventForm">
+            <input type="hidden" id="eventId">
+
+            <input
+                    type="text"
+                    id="title"
+                    placeholder="Event Title"
+                    maxlength="100"
+                    required>
+
+            <textarea
+                    id="description"
+                    placeholder="Event Description"
+                    required></textarea>
+
+            <input
+                    type="text"
+                    id="location"
+                    placeholder="Event Location"
+                    required>
+
+            <div class="form-actions">
+                <button type="submit" class="save-btn">Save Event</button>
+                <button type="button" class="cancel-btn" onclick="closeModal()">
+                    Cancel
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+
+    const API = "/api/events";
+
+    let allEvents = [];
+    let editing = false;
+    let searchTimer;
+
+    const grid = document.getElementById("eventGrid");
+    const statusBox = document.getElementById("status");
+
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[char]);
+    }
+
+    async function loadEvents() {
+        try {
+            statusBox.textContent = "Loading events...";
+
+            const response = await fetch(API);
+
+            if (!response.ok) {
+                throw new Error("Could not retrieve events.");
+            }
+
+            allEvents = await response.json();
+            displayEvents(allEvents);
+
+            statusBox.textContent = "";
+
+        } catch (error) {
+            grid.innerHTML = `
+            <div class="empty">
+                Could not connect to the server.
+                Please check that Crewvane is running.
+            </div>`;
+            statusBox.textContent = error.message;
+        }
+    }
+
+    function displayEvents(events) {
+        document.getElementById("eventCount").textContent =
+            events.length + " events found";
+
+        if (events.length === 0) {
+            grid.innerHTML = `
+            <div class="empty">
+                <h3>No events found</h3>
+                <p>Try another search or create a new event.</p>
+            </div>`;
+            return;
+        }
+
+        grid.innerHTML = events.map(event => `
+        <div class="event-card">
+
+            <div class="event-icon">✦</div>
+
+            <h3>${escapeHTML(event.title)}</h3>
+
+            <p>${escapeHTML(event.description)}</p>
+
+            <p class="location">⌖ ${escapeHTML(event.location)}</p>
+
+            <div class="actions">
+                <button class="small-btn edit-btn"
+                    onclick="editEvent(${Number(event.id)})">
+                    Edit
+                </button>
+
+                <button class="small-btn delete-btn"
+                    onclick="deleteEvent(${Number(event.id)})">
+                    Delete
+                </button>
+            </div>
+
+        </div>
+    `).join("");
+    }
+
+    function searchEvents() {
+        clearTimeout(searchTimer);
+
+        searchTimer = setTimeout(async () => {
+            const query = document.getElementById("searchInput").value.trim();
+            const type = document.getElementById("searchType").value;
+
+            if (!query) {
+                displayEvents(allEvents);
+                return;
+            }
+
+            try {
+                const params = new URLSearchParams();
+                params.set(type, query);
+
+                const response = await fetch(
+                    `${API}/search/${type}?${params.toString()}`
+                );
+
+                if (!response.ok) {
+                    throw new Error("Search failed.");
+                }
+
+                const results = await response.json();
+                displayEvents(results);
+
+            } catch (error) {
+                statusBox.textContent = error.message;
+            }
+
+        }, 250);
+    }
+
+    function openModal(event = null) {
+        document.getElementById("eventModal").style.display = "flex";
+        document.getElementById("eventForm").reset();
+
+        editing = Boolean(event);
+
+        document.getElementById("modalTitle").textContent =
+            editing ? "Update Event" : "Create New Event";
+
+        document.getElementById("eventId").value = event?.id ?? "";
+        document.getElementById("title").value = event?.title ?? "";
+        document.getElementById("description").value =
+            event?.description ?? "";
+        document.getElementById("location").value =
+            event?.location ?? "";
+    }
+
+    function closeModal() {
+        document.getElementById("eventModal").style.display = "none";
+    }
+
+    async function editEvent(id) {
+        const event = allEvents.find(item => item.id === id);
+
+        if (!event) {
+            statusBox.textContent = "Event not found in the current list.";
+            return;
+        }
+
+        openModal(event);
+    }
+
+    document.getElementById("eventForm").addEventListener(
+        "submit",
+        async function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById("eventId").value;
+
+            const eventData = {
+                title: document.getElementById("title").value.trim(),
+                description: document.getElementById("description").value.trim(),
+                location: document.getElementById("location").value.trim()
+            };
+
+            if (!eventData.title || !eventData.description || !eventData.location) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const url = editing ? `${API}/${id}` : API;
+            const method = editing ? "PUT" : "POST";
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(eventData)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json().catch(() => null);
+                    throw new Error(error?.message || "Could not save event.");
+                }
+
+                closeModal();
+                document.getElementById("searchInput").value = "";
+                await loadEvents();
+
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+    );
+
+    async function deleteEvent(id) {
+        const confirmed = confirm(
+            "Are you sure you want to delete this event?"
+        );
+
+        if (!confirmed) return;
+
+        try {
+            const response = await fetch(`${API}/${id}`, {
+                method: "DELETE"
+            });
+
+            if (!response.ok) {
+                throw new Error("Could not delete event.");
+            }
+
+            await loadEvents();
+
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    loadEvents();
+
+</script>
+
+</body>
+</html>

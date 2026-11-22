@@ -1,0 +1,8 @@
+POST http://localhost:8080/api/events
+Content-Type: application/json
+
+{
+  "title": "IET Tech Fest",
+  "description": "A campus technology event",
+  "location": "IET Lucknow"
+}
